@@ -1,0 +1,70 @@
+
+A — TESTS  (Predicate<T> → retournent VRAI ou FAUX) 
+  1. "Véhicule disponible ?"
+     Vérifie si le statut du véhicule est "disponible" (non loué,
+     non en panne, non en révision). Retourne true si disponible.
+ 
+  2. "Véhicule en panne ?"
+     Vérifie si le statut du véhicule est marqué "en panne".
+     Retourne true si le véhicule est actuellement en panne.
+ 
+  3. "Kilométrage > seuil ?"
+     Compare le kilométrage actuel du véhicule à une valeur seuil
+     donnée en paramètre. Retourne true si le km dépasse ce seuil.
+ 
+  4. "Véhicule à réviser : (km > seuil) OU (année < seuilAnnée)"
+     Vérifie si le véhicule nécessite une révision, selon deux
+     critères : kilométrage trop élevé OU année de fabrication
+     trop ancienne. Retourne true si au moins un critère est vrai.
+ 
+  5. "Conducteur autorisé : permis correspond à un format donné"
+     Vérifie si le numéro de permis du conducteur respecte un format
+     attendu (ex : commence par 'B'). Retourne true si autorisé.
+ 
+  
+B — TRANSFORMATIONS  (Function<T, R> → retournent une valeur) 
+
+  6. "Résumé véhicule" (String)
+     Produit une chaîne de caractères résumant les informations
+     principales du véhicule : marque, modèle, immatriculation,
+     statut, kilométrage, année.
+ 
+  7. "Extraire immatriculation" (String)
+     Extrait et retourne uniquement le numéro d'immatriculation
+     du véhicule sous forme de chaîne de caractères.
+ 
+  8. "Calculer âge du véhicule" (int)
+     Calcule et retourne l'âge du véhicule en années, en faisant
+     la différence entre l'année courante et l'année de fabrication.
+ 
+  9. "Coût total d'un entretien" (int)
+     Calcule le coût total d'un entretien en ajoutant une taxe fixe
+     prédéfinie au coût de base de l'entretien. Retourne le total.
+ 
+  
+C — ACTIONS  (Consumer<T> → ne retournent rien / void)
+
+  10. "Marquer véhicule en révision"
+      Modifie le statut du véhicule pour l'indiquer "en révision".
+      Aucune valeur retournée : c'est un effet de bord sur l'objet.
+ 
+  11. "Augmenter kilométrage d'un véhicule de X"
+      Ajoute une valeur X (entier) au kilométrage actuel du véhicule.
+      Aucune valeur retournée : le kilométrage de l'objet est modifié.
+ 
+  12. "Terminer une location (mettre dateFin)"
+      Renseigne la date de fin d'une location en cours sur l'objet
+      Location. Aucune valeur retournée : l'objet est mis à jour.
+ 
+  
+ D — COMPARAISON / TRI  (Comparator<T> → ordre entre 2 éléments)
+
+  13. "Comparer deux véhicules par kilométrage (ordre croissant)"
+      Compare deux véhicules selon leur kilométrage. Retourne un
+      entier négatif, zéro, ou positif pour trier du plus bas
+      au plus haut kilométrage (ordre croissant).
+ 
+  14. "Comparer deux véhicules par immatriculation (ordre alphabétique)"
+      Compare deux véhicules selon leur immatriculation en ordre
+      alphabétique (A → Z). Utilise la comparaison lexicographique
+      standard des chaînes de caractères.
