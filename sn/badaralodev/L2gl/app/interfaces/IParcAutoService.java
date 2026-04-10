@@ -1,6 +1,7 @@
 package sn.badaralodev.L2gl.app.interfaces;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 
 import sn.badaralodev.L2gl.app.model.Entretien;
@@ -17,8 +18,8 @@ public interface IParcAutoService {
     void trierVehicules(List<Vehicule> src, VehiculeComparaison<Vehicule> cmp);
     void ajouterVehicule(Vehicule v);
     void supprimerVehicule(String immat);
-    Vehicule rechercher(String immat);
     boolean ajouterEntretien(Entretien e);
     Set<Vehicule> vehiculesUniques();
     List<Entretien> getEntretiens(Long vehiculeId);
+    Optional<Vehicule> rechercher(String immat);
 }

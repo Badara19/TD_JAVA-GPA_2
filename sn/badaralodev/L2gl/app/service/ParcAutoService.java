@@ -2,6 +2,8 @@ package sn.badaralodev.L2gl.app.service;
 
 import sn.badaralodev.L2gl.app.interfaces.IParcAutoService;
 import sn.badaralodev.L2gl.app.model.*;
+
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -10,6 +12,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.Map;
+import java.util.Optional;
 
 
 
@@ -87,13 +90,11 @@ public class ParcAutoService implements IParcAutoService {
         }
     }
 
-    public Vehicule rechercher(String immat){
-        if(immat !=null && indexParImmat.containsKey(immat)){
-            return indexParImmat.get(immat);
-        }else{
-            System.out.println("Véhicule non trouvé ou null : " + immat);
-            return null;
+    public Optional<Vehicule> rechercher(String immat) {
+        if (immat != null && indexParImmat.containsKey(immat)) {
+            return Optional.of(indexParImmat.get(immat));
         }
+        return Optional.empty();
     }
 
     public Set<Vehicule> vehiculesUniques(){
@@ -166,6 +167,58 @@ public Map<String, Integer> coutEntretienParVehicule() {
                     entry -> entry.getValue().stream()
                                  .collect(Collectors.summingInt(Entretien::getCout))
             ));
+}
+    public Vehicule rechercherOuNull(String immat) {
+    return rechercher(immat).orElse(null);
+}
+public Vehicule rechercherOuErreur(String immat) {
+    return rechercher(immat)
+        .orElseThrow(() -> new IllegalArgumentException("Véhicule non trouvé : " + immat));
+}
+public void afficherVehicule(String immat) {
+    rechercher(immat)
+        .ifPresent(v -> {
+            System.out.println("Véhicule trouvé : ");
+            v.afficher();
+        });
+}
+
+public List<LigneRapport> genererRapport() {
+    return vehicules.stream()
+        .map(v -> new LigneRapport(
+            v.getImmatriculation(),
+            v.getMarque(),
+            EtatVehicule.valueOf(v.getStatut().toUpperCase()),  // ← Conversion ici
+            v.getKilometrage()
+        ))
+        .collect(Collectors.toList());
+}
+
+public void afficherRapport() {
+    System.out.println("=== RAPPORT DES VÉHICULES ===");
+    genererRapport().forEach(System.out::println);
+}
+public void démarrerLocation(Vehicule v, LocalDate debut) {
+    if (v.getStatut().equals("disponible")) {
+        v.setStatut("EN LOCATION");
+        System.out.println("Location démarrée pour " + v.getImmatriculation() + " à partir du " + debut);
+    } else {
+        System.out.println("Impossible de démarrer la location. Véhicule non disponible : " + v.getImmatriculation());
+    } 
+}
+public List<Vehicule> vehiculesAReviser() {
+    return vehicules.stream()
+        .filter(v -> {
+            // Règle : kilométrage > 50 000 OU état = "en entretien" (ou autre logique)
+            boolean kmElevé = v.getKilometrage() > 50000;
+            boolean enEntretien = "en entretien".equalsIgnoreCase(v.getStatut());
+
+            // Tu peux aussi ajouter une règle sur l’état "hors service" si tu veux
+            boolean horsService = "En_panne".equalsIgnoreCase(v.getStatut());
+
+            return kmElevé || enEntretien || horsService;
+        })
+        .collect(Collectors.toList());
 }
 
 }

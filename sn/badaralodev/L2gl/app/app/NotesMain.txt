@@ -68,3 +68,4 @@ C — ACTIONS  (Consumer<T> → ne retournent rien / void)
       Compare deux véhicules selon leur immatriculation en ordre
       alphabétique (A → Z). Utilise la comparaison lexicographique
       standard des chaînes de caractères.
+   

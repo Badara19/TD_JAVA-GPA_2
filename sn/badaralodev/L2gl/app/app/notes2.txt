@@ -1,0 +1,21 @@
+
+La Map résout le problème de recherche par identifiant métier — ici l'immatriculation. Contrairement à la List qui oblige un parcours  pour trouver un objet par valeur.
+
+equals seul ne suffit pas parce que le HashSet ne compare pas tous les éléments entre eux. Il utilise hashCode pour savoir où chercher avant même d'appeler equals
+
+On retourne une liste vide parce que l'absence de données n'est pas une erreur — c'est un résultat valide, et une liste vide se comporte correctement partout sans forcer l'appelant à vérifier null avant chaque utilisation.
+
+Séparer source, opérations et résultat rend le code lisible comme une intention métier, facilite les modifications sans tout réécrire, et permet au Stream d'optimiser l'exécution en ne parcourant les données qu'une seule fois.
+
+groupingBy est plus lisible parce qu'il exprime l'intention — regrouper selon un critère et agréger — sans exposer la mécanique d'initialisation et de mise à jour de la Map que le développeur devrait gérer à la main
+
+Dernier TD
+1) Parce qu'Entite ne peut pas savoir quoi afficher. Elle connaît seulement id — elle n'a aucune idée que Vehicule a une immatriculation ou que Location a deux dates.
+
+2) Un CRUD générique (Crud<T extends Identifiable>) permet de réutiliser une seule implémentation pour toutes les entités (Vehicule, Conducteur, Entretien, Location), sans dupliquer la logique de stockage.
+ Un repo spécifique (VehiculeRepository, ConducteurRepository…) oblige à réécrire les mêmes opérations pour chaque type, ce qui viole le principe DRY (Don't Repeat Yourself). Le générique garantit aussi la cohérence des validations en un seul endroit.
+
+3) Optional<T> oblige à expliciter le traitement du cas “absent” via des méthodes comme orElse, orElseThrow, ou ifPresent. Contrairement à null, il ne permet pas d’ignorer le cas où la valeur n’existe pas, ce qui élimine les NullPointerException et rend le code plus robuste et lisible.
+
+4) Pourquoi un record est adapté à un “objet de rapport” ?
+Un record est immuable, léger, et auto-généré — parfait pour les DTO (Data Transfer Objects) comme les rapports. Il évite le boilerplate (constructeur, getters, equals, hashCode) et garantit que les données ne changent pas après création, ce qui est idéal pour les rapports statiques ou les exports.
